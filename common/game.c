@@ -25,6 +25,29 @@ static_assert((AUDIO_SAMPLE_RATE%FPS)==0, "Sample rate should divide evenly by f
 
 static int16_t audio[AUDIO_CAPACITY];
 
+static struct {
+  uint8_t d[8];
+} blocks[] = {
+  {
+    0x00,
+    0x00,
+    0x10,
+    0x10,
+    0x08,
+    0x02,
+    0x40,
+    0x00
+  }
+};
+
+static struct {
+  Color fg, bg;
+} pals[] = {
+  {
+    { .r = 127, .g = 127, .a = 255 },
+    { .g = 88, .b = 21, .a = 255 },
+  }
+};
 
 static void clear_display(Color color)
 {
@@ -88,6 +111,32 @@ static void draw_disk(
   }
 }
 
+static inline void draw_rect(int x, int y, int w, int h, Color color)
+{
+  for (int row = 0; row < h; ++row) {
+    for (int col = 0; col < w; ++col) {
+      put_pixel(col+x, row+y, color);
+    }
+  }
+}
+
+static inline void draw_tile(int x, int y, int scalex, int scaley, uint8_t block, uint8_t pal)
+{
+  uint8_t *bd = blocks[block].d;
+  for (int row = 0; row < 8; ++row) {
+    uint8_t bc = bd[row];
+    for (int col = 0; col < 8; ++col) {
+      if (bc & 1) {
+        draw_rect(col * scalex + x, row * scaley + y, scalex, scaley, pals[pal].fg);
+      } else {
+        draw_rect(col * scalex + x, row * scaley + y, scalex, scaley, pals[pal].bg);
+      }
+      bc >>= 1;
+    }
+  }
+}
+
+
 Game game_init(void)
 {
   clear_display((Color) {
@@ -106,6 +155,12 @@ Game game_init(void)
 }
 void game_update(void)
 {
+  for (int i = 0; i < 44; ++i) {
+    for (int j = 0; j < 44; ++j) {
+      draw_tile(i * 32 + 50, j * 32 + 50, 4, 4, 0, 0);
+    }
+  }
+
   draw_disk(100, 100, 25, (Color) { .r = 255, .a = 255 });
 }
 void game_key_down(int key)
