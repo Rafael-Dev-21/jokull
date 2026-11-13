@@ -12,3 +12,4 @@ build/
 */.xmake/
 */*/.cache/
 */*/.xmake/
+.vscode/
