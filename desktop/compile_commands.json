@@ -1,0 +1,11 @@
+[
+{
+  "directory": "/data/data/com.termux/files/home/dev/jokull/src/desktop",
+  "arguments": ["/data/data/com.termux/files/usr/bin/gcc", "-c", "-fvisibility=hidden", "-O3", "-std=c23", "-I../common", "-D_REENTRANT", "-I", "/data/data/com.termux/files/usr/include", "-I", "/data/data/com.termux/files/usr/include/glib-2.0", "-I", "/data/data/com.termux/files/usr/lib/glib-2.0/include", "-I", "/data/data/com.termux/files/usr/include/opus", "-pthread", "-DNDEBUG", "-o", "build/.objs/jokull/linux/arm64/release/main.c.o", "main.c"],
+  "file": "main.c"
+},
+{
+  "directory": "/data/data/com.termux/files/home/dev/jokull/src/desktop",
+  "arguments": ["/data/data/com.termux/files/usr/bin/gcc", "-c", "-fvisibility=hidden", "-O3", "-std=c23", "-I../common", "-D_REENTRANT", "-I", "/data/data/com.termux/files/usr/include", "-I", "/data/data/com.termux/files/usr/include/glib-2.0", "-I", "/data/data/com.termux/files/usr/lib/glib-2.0/include", "-I", "/data/data/com.termux/files/usr/include/opus", "-pthread", "-DNDEBUG", "-o", "build/.objs/jokull/linux/arm64/release/__/common/game.c.o", "../common/game.c"],
+  "file": "../common/game.c"
+}]

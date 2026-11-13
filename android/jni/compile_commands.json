@@ -1,0 +1,14 @@
+[
+{
+  "directory": "/data/data/com.termux/files/home/dev/jokull/src/android/build",
+  "command": "/data/data/com.termux/files/usr/bin/cc -Djokull_EXPORTS -I/data/data/com.termux/files/home/dev/jokull/src/android/jni/../../common -O2 -g -DNDEBUG -std=c23 -fPIC -Wall -Wextra -o CMakeFiles/jokull.dir/data/data/com.termux/files/home/dev/jokull/src/common/game.c.o -c /data/data/com.termux/files/home/dev/jokull/src/common/game.c",
+  "file": "/data/data/com.termux/files/home/dev/jokull/src/common/game.c",
+  "output": "/data/data/com.termux/files/home/dev/jokull/src/android/build/CMakeFiles/jokull.dir/data/data/com.termux/files/home/dev/jokull/src/common/game.c.o"
+},
+{
+  "directory": "/data/data/com.termux/files/home/dev/jokull/src/android/build",
+  "command": "/data/data/com.termux/files/usr/bin/cc -Djokull_EXPORTS -I/data/data/com.termux/files/home/dev/jokull/src/android/jni/../../common -O2 -g -DNDEBUG -std=c23 -fPIC -Wall -Wextra -o CMakeFiles/jokull.dir/jni.c.o -c /data/data/com.termux/files/home/dev/jokull/src/android/jni/jni.c",
+  "file": "/data/data/com.termux/files/home/dev/jokull/src/android/jni/jni.c",
+  "output": "/data/data/com.termux/files/home/dev/jokull/src/android/build/CMakeFiles/jokull.dir/jni.c.o"
+}
+]

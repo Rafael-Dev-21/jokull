@@ -1,0 +1,11 @@
+[
+{
+  "directory": "/data/data/com.termux/files/home/dev/jokull/emscripten",
+  "arguments": ["/data/data/com.termux/files/usr/opt/emscripten/emcc", "-c", "-fvisibility=hidden", "-O3", "-std=gnu23", "-I../common", "-DNDEBUG", "-o", "build/.objs/jokull/wasm/wasm32/release/main.c.o", "main.c"],
+  "file": "main.c"
+},
+{
+  "directory": "/data/data/com.termux/files/home/dev/jokull/emscripten",
+  "arguments": ["/data/data/com.termux/files/usr/opt/emscripten/emcc", "-c", "-fvisibility=hidden", "-O3", "-std=gnu23", "-I../common", "-DNDEBUG", "-o", "build/.objs/jokull/wasm/wasm32/release/__/common/game.c.o", "../common/game.c"],
+  "file": "../common/game.c"
+}]

@@ -1,0 +1,14 @@
+*.apk
+*.so
+*.dll
+*.exe
+*.app
+*.out
+build/
+*/build/
+.cache/
+.xmake/
+*/.cache/
+*/.xmake/
+*/*/.cache/
+*/*/.xmake/
