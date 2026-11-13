@@ -2,6 +2,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include "game.h"
+#include "vec.h"
 
 #define FPS 60
 
@@ -24,34 +25,6 @@ static_assert((AUDIO_SAMPLE_RATE%FPS)==0, "Sample rate should divide evenly by f
 
 static int16_t audio[AUDIO_CAPACITY];
 
-#define PI 3.14159265358979323846
-#define TAU (2.0 * PI)
-
-#define BMP 120
-
-#define NOTE_FRAMES (AUDIO_SAMPLE_RATE*60/BMP/2)
-
-#define FM_RATIO 2.0
-#define FM_INDEX 2.5
-
-#define FM_VOLUME 0.45
-
-#define ATTACK_FRAMES 220
-#define RELEASE_FRAMES 1323
-
-static const double melody[] = {
-  523.25, 659.25, 783.99, 659.25,
-  440.00, 523.25, 659.25, 523.25,
-  349.23, 440.00, 523.25, 440.00,
-  392.00, 493.88, 587.33, 493.88,
-};
-
-#define MELODY_LENGTH (sizeof(melody) / sizeof(melody[0]))
-
-static uint64_t audio_clock;
-
-static double carrier_phase;
-static double modulator_phase;
 
 static void clear_display(Color color)
 {
@@ -100,96 +73,23 @@ static void draw_line(
   }
 }
 
-static double envelope(size_t position)
+static void draw_disk(
+    int cx, int cy, int r,
+    Color color)
 {
-  double attack = 1.0;
-  double release = 1.0;
-
-  if (position < ATTACK_FRAMES)
-    attack = (double) position / ATTACK_FRAMES;
-
-  size_t remaining = NOTE_FRAMES - position;
-
-  if (remaining < RELEASE_FRAMES)
-    release = (double) remaining / RELEASE_FRAMES;
-
-  return attack * release;
-}
-
-static void synthesize(int16_t *buffer, size_t frames)
-{
-  for (size_t i = 0; i < frames; ++i) {
-    size_t note_index = (audio_clock / NOTE_FRAMES) % MELODY_LENGTH;
-    size_t note_position = audio_clock % NOTE_FRAMES;
-
-    double frequency = melody[note_index];
-    double amplitude = envelope(note_position);
-    double modulation = sin(modulator_phase) * FM_INDEX;
-    double sample = sin(carrier_phase + modulation);
-
-    sample *= amplitude * FM_VOLUME;
-
-    int16_t output = (int16_t) (sample * 32767.0);
-
-    for (size_t j = 0; j < AUDIO_CHANNELS; ++j) {
-      buffer[i * AUDIO_CHANNELS + j] = output;
+  for (int j = -r; j <= r; ++j) {
+    int y = cy + j;
+    for (int i = -r; i <= r; ++i) {
+      int x = cx + i;
+      if ((i * i + j * j) > (r * r))
+        continue;
+      put_pixel(x, y, color);
     }
-
-    carrier_phase += TAU * frequency / AUDIO_SAMPLE_RATE;
-    modulator_phase += TAU * frequency * FM_RATIO / AUDIO_SAMPLE_RATE;
-
-    if (carrier_phase >= TAU)
-      carrier_phase -= TAU;
-    if (modulator_phase >= TAU)
-      modulator_phase -= TAU;
-    ++audio_clock;
-  }
-}
-
-static void draw_oscilloscope(void)
-{
-  Color background = {
-    .r = 12, .g = 16, .b = 24, .a = 255
-  };
-
-  Color baseline = {
-    .r = 55, .g = 65, .b = 75, .a = 255
-  };
-
-  Color waveform = {
-    .r = 80, .g = 230, .b = 150, .a = 255
-  };
-
-  clear_display(background);
-
-  int center = DISPLAY_HEIGHT/2;
-
-  draw_line(
-      0, center,
-      DISPLAY_WIDTH-1, center,
-      baseline);
-
-  int previous_y = center;
-
-  for (int x = 0; x < DISPLAY_WIDTH; ++x) {
-    size_t index = (size_t) x * AUDIO_FRAMES_PER_TICK / DISPLAY_WIDTH;
-    int16_t sample = audio[index * AUDIO_CHANNELS];
-
-    int y = center - (int) ((int32_t) sample * (DISPLAY_HEIGHT/3) / 32768);
-    
-    if (x > 0)
-      draw_line(x-1, previous_y, x, y, waveform);
-
-    previous_y = y;
   }
 }
 
 Game game_init(void)
 {
-  carrier_phase = 0.0;
-  modulator_phase = 0.0;
-  audio_clock = 0;
-
   clear_display((Color) {
     .r = 12, .g = 16, .b = 24, .a = 255
   });
@@ -206,8 +106,7 @@ Game game_init(void)
 }
 void game_update(void)
 {
-  synthesize(audio, AUDIO_FRAMES_PER_TICK);
-  draw_oscilloscope();
+  draw_disk(100, 100, 25, (Color) { .r = 255, .a = 255 });
 }
 void game_key_down(int key)
 {}
